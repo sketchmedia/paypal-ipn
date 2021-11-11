@@ -61,6 +61,12 @@ class Request implements Service
             throw new ServiceException($e->getMessage());
         }
 
-        return new Response($response);
+        return new Response(
+            $response->getStatusCode(),
+            $response->getHeaders(),
+            $response->getBody(),
+            $response->getProtocolVersion(),
+            $response->getReasonPhrase()
+        );
     }
 }

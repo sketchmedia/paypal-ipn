@@ -3,6 +3,7 @@
 namespace Sujip\PayPal\Notification\Http;
 
 use GuzzleHttp\Psr7\Response as Psr7Response;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * Class Response.
@@ -18,19 +19,19 @@ class Response extends Psr7Response
      */
     protected $response;
 
-    /**
-     * Create a new response instance.
-     *
-     * @param Psr7Response $response
-     */
-    public function __construct(Psr7Response $response)
-    {
-        $this->response = $response;
-    }
+//    /**
+//     * Create a new response instance.
+//     *
+//     * @param Psr7Response $response
+//     */
+//    public function __construct(Psr7Response $response)
+//    {
+//        $this->response = $response;
+//    }
 
-    public function getBody()
+    public function getBody() : StreamInterface
     {
-        return (string) $this->response->getBody();
+        return $this->response->getBody();
     }
 
     /**
@@ -38,7 +39,7 @@ class Response extends Psr7Response
      */
     public function isVerified()
     {
-        return $this->getBody() === Verifier::IPN_VERIFIED;
+        return $this->getBody()->getContents() === Verifier::IPN_VERIFIED;
     }
 
     /**
@@ -46,13 +47,13 @@ class Response extends Psr7Response
      */
     public function isInvalid()
     {
-        return $this->getBody() === Verifier::IPN_INVALID;
+        return $this->getBody()->getContents() === Verifier::IPN_INVALID;
     }
 
     /**
      * @return int
      */
-    public function getCode()
+    public function getCode(): int
     {
         return $this->response->getStatusCode();
     }
