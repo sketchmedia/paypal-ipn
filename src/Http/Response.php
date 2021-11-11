@@ -19,19 +19,9 @@ class Response extends Psr7Response
      */
     protected $response;
 
-//    /**
-//     * Create a new response instance.
-//     *
-//     * @param Psr7Response $response
-//     */
-//    public function __construct(Psr7Response $response)
-//    {
-//        $this->response = $response;
-//    }
-
-    public function getBody() : StreamInterface
+    public function __construct(int $status = 200, array $headers = [], $body = null, string $version = '1.1', string $reason = null)
     {
-        return $this->response->getBody();
+        parent::__construct($status, $headers, $body, $version, $reason);
     }
 
     /**
@@ -55,6 +45,6 @@ class Response extends Psr7Response
      */
     public function getCode(): int
     {
-        return $this->response->getStatusCode();
+        return $this->getStatusCode();
     }
 }
