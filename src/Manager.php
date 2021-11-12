@@ -48,10 +48,10 @@ class Manager
         $this->eventDispatcher = $dispatcher;
     }
 
-    public function fire()
+    public function fire() : void
     {
         $payload = $this->payload->create();
-        $name = self::IPN_FAILURE;
+
         try {
             $response = $this->verifier->verify($payload);
 
@@ -64,6 +64,8 @@ class Manager
                 $name = self::IPN_INVALID;
                 $event = new Invalid($payload);
             }
+
+            $this->eventDispatcher->dispatch($name, $event);
         } catch (\Exception $e) {
             $name = self::IPN_FAILURE;
             $event = new Failure(
@@ -71,8 +73,6 @@ class Manager
                 $e->getMessage()
             );
         }
-
-        $this->eventDispatcher->dispatch($name, $event);
     }
 
     /**
