@@ -5,7 +5,7 @@ namespace Sujip\PayPal\Notification\Contracts;
 interface Payload
 {
     /**
-     * @return Payload
+     * @return \Sujip\PayPal\Notification\Payload
      */
-    public function create();
+    public function create(): \Sujip\PayPal\Notification\Payload;
 }

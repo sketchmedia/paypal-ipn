@@ -25,7 +25,7 @@ class Arrayable implements PayloadContract
         $this->payload = $payload;
     }
 
-    public function create()
+    public function create(): Payload
     {
         return new Payload($this->payload);
     }

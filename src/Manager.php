@@ -51,7 +51,7 @@ class Manager
     public function fire()
     {
         $payload = $this->payload->create();
-
+        $name = self::IPN_FAILURE;
         try {
             $response = $this->verifier->verify($payload);
 
@@ -64,13 +64,7 @@ class Manager
                 $name = self::IPN_INVALID;
                 $event = new Invalid($payload);
             }
-        } catch (\UnexpectedValueException $e) {
-            $name = self::IPN_FAILURE;
-            $event = new Failure(
-                $payload,
-                $e->getMessage()
-            );
-        } catch (ServiceException $e) {
+        } catch (\Exception $e) {
             $name = self::IPN_FAILURE;
             $event = new Failure(
                 $payload,
